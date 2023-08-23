@@ -6,7 +6,7 @@
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:21:53 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/22 18:01:33 by osarsari         ###   ########.fr       */
+/*   Updated: 2023/08/23 14:18:09 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ int	valid_pid(char *str)
 	return (pid);
 }
 
+void	handler(int signum, siginfo_t *info, void *context)
+{
+	(void)context;
+	(void)info;
+	if (signum == SIGUSR2)
+		ft_printf("Message received by server\n");
+}
+
 void	send_message(int pid, char *str)
 {
 	int	i;
@@ -52,11 +60,19 @@ void	send_message(int pid, char *str)
 		}
 		i++;
 	}
+	j = 0;
+	while (j < 8)
+	{
+		kill(pid, SIGUSR2);
+		usleep(100);
+		j++;
+	}
 }
 
 int	main(int argc, char **argv)
 {
-	int	pid;
+	struct sigaction	sa;
+	int					pid;
 
 	if (argc != 3)
 	{
@@ -64,11 +80,10 @@ int	main(int argc, char **argv)
 		exit(-1);
 	}
 	pid = valid_pid(argv[1]);
-	if (!pid)
-	{
-		ft_printf("Invalid PID\n");
-		exit(-1);
-	}
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	send_message(pid, argv[2]);
 	return (0);
 }
