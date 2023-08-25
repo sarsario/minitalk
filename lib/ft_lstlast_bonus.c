@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 17:36:19 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 16:16:41 by osarsari         ###   ########.fr       */
+/*   Created: 2023/04/12 12:09:00 by osarsari          #+#    #+#             */
+/*   Updated: 2023/08/25 16:06:55 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "../includes/libft.h"
 
-# include "./libft.h"
-# include <signal.h>
+/*
+** Returns the last node of the list.
+**
+** lst:	The beginning of the list.
+**
+** Returns:
+** Last node of the list.
+*/
 
-#endif
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}

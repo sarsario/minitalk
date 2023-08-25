@@ -1,19 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 17:36:19 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 16:16:41 by osarsari         ###   ########.fr       */
+/*   Created: 2023/04/08 16:55:18 by osarsari          #+#    #+#             */
+/*   Updated: 2023/08/25 16:08:28 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "../includes/libft.h"
 
-# include "./libft.h"
-# include <signal.h>
+/*
+** Computes the length of the string s.
+**
+** s:	The string for which the length will be computed.
+**
+** Returns:
+** The length of s, or zero if s is NULL.
+*/
 
-#endif
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (*s++)
+		len++;
+	return (len);
+}

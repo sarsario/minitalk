@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 17:36:19 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 16:16:41 by osarsari         ###   ########.fr       */
+/*   Created: 2023/04/12 11:36:03 by osarsari          #+#    #+#             */
+/*   Updated: 2023/08/25 16:06:37 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "../includes/libft.h"
 
-# include "./libft.h"
-# include <signal.h>
+/*
+** Adds the node `new` at the beginning of the list.
+**
+** lst:	The address of a pointer to the first link of a list.
+** new:	The address of a pointer to the node to be added to the list.
+*/
 
-#endif
+void	ft_lstadd_front(t_list **lst, t_list *new)
+{
+	if (lst && new)
+	{
+		new->next = *lst;
+		*lst = new;
+	}
+}

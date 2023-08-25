@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 17:36:19 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 16:16:41 by osarsari         ###   ########.fr       */
+/*   Created: 2023/04/08 16:26:11 by osarsari          #+#    #+#             */
+/*   Updated: 2023/08/25 16:06:06 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "../includes/libft.h"
 
-# include "./libft.h"
-# include <signal.h>
+/*
+** Check if the given character is alphanumeric.
+**
+** c:	The character to be checked
+**
+** Return:
+** Non-zero value if the character is alphanumeric, 0 otherwise.
+*/
 
-#endif
+int	ft_isalnum(int c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c));
+}

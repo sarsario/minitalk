@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 17:36:19 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 16:16:41 by osarsari         ###   ########.fr       */
+/*   Created: 2023/04/11 18:11:25 by osarsari          #+#    #+#             */
+/*   Updated: 2023/08/25 16:07:44 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "../includes/libft.h"
 
-# include "./libft.h"
-# include <signal.h>
+/*
+** Outputs the string `s` to the given file descriptor followed by a newline.
+**
+** s:	The string output.
+** fd:	The file descriptor on which to write.
+*/
 
-#endif
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (s)
+	{
+		ft_putstr_fd(s, fd);
+		ft_putchar_fd('\n', fd);
+	}
+}

@@ -6,52 +6,40 @@
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:21:53 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/23 14:18:09 by osarsari         ###   ########.fr       */
+/*   Updated: 2023/08/25 17:21:12 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/client.h"
 
-int	valid_pid(char *str)
+int	ft_isnumber(char *pid)
 {
 	int	i;
-	int	pid;
 
 	i = 0;
-	while (str[i])
+	while (pid[i])
 	{
-		if (!ft_isdigit(str[i]))
+		if (!ft_isdigit(pid[i]))
 			return (0);
 		i++;
 	}
-	pid = ft_atoi(str);
-	if (pid < 0)
-		return (0);
-	if (kill(pid, 0) == -1)
-		return (0);
-	return (pid);
+	return (1);
 }
 
-void	handler(int signum, siginfo_t *info, void *context)
-{
-	(void)context;
-	(void)info;
-	if (signum == SIGUSR2)
-		ft_printf("Message received by server\n");
-}
-
-void	send_message(int pid, char *str)
+void	send_message(int pid, char *message)
 {
 	int	i;
 	int	j;
+	int	bit;
 
 	i = 0;
-	while (str[i])
+	while (message[i])
 	{
 		j = 0;
 		while (j < 8)
 		{
-			if (str[i] & (1 << j))
+			bit = (message[i] >> j) & 1;
+			if (bit == 1)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
@@ -71,19 +59,24 @@ void	send_message(int pid, char *str)
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	sa;
-	int					pid;
+	int	pid;
 
 	if (argc != 3)
 	{
-		ft_printf("Usage: ./client [server-pid] [message]\n");
+		ft_putstr_fd("Usage: ./client [server_pid] [message]\n", 2);
 		exit(-1);
 	}
-	pid = valid_pid(argv[1]);
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = handler;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	if (!ft_isnumber(argv[1]))
+	{
+		ft_putstr_fd("Invalid PID\n", 2);
+		exit(-1);
+	}
+	pid = ft_atoi(argv[1]);
+	if (kill(pid, 0) == -1)
+	{
+		ft_putstr_fd("Invalid PID\n", 2);
+		exit(-1);
+	}
 	send_message(pid, argv[2]);
 	return (0);
 }
