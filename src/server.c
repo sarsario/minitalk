@@ -6,17 +6,21 @@
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:50:19 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 17:21:41 by osarsari         ###   ########.fr       */
+/*   Updated: 2023/08/25 19:06:01 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/server.h"
 
-void	handler(int signum)
+void	handler(int signum, siginfo_t *info, void *context)
 {
 	static int	i = 0;
 	static char	c = 0;
+	static int	pid = 0;
 
+	(void)context;
+	if (info->si_pid)
+		pid = info->si_pid;
 	if (signum == SIGUSR1)
 		c |= 1 << i;
 	i++;
@@ -25,6 +29,11 @@ void	handler(int signum)
 		if (c == '\0')
 		{
 			ft_printf("\n");
+			if (kill(pid, SIGUSR1) == -1)
+			{
+				ft_printf("Error: Could not respond back to client.\n");
+				exit(-1);
+			}
 		}
 		ft_printf("%c", c);
 		i = 0;
@@ -34,15 +43,25 @@ void	handler(int signum)
 
 int	main(void)
 {
-	int	pid;
+	struct sigaction	sa;
+	sigset_t			block_mask;
 
-	pid = getpid();
-	ft_printf("Server PID: %d\n", pid);
-	while (1)
+	ft_printf("Server PID: %d\n", getpid());
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	sigemptyset(&block_mask);
+	sa.sa_mask = block_mask;
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 	{
-		signal(SIGUSR1, handler);
-		signal(SIGUSR2, handler);
-		pause();
+		ft_printf("Error: Could not handle SIGUSR1.\n");
+		exit(-1);
 	}
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		ft_printf("Error: Could not handle SIGUSR2.\n");
+		exit(-1);
+	}
+	while (1)
+		pause();
 	return (0);
 }

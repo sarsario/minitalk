@@ -6,7 +6,7 @@
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:21:53 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 17:21:12 by osarsari         ###   ########.fr       */
+/*   Updated: 2023/08/25 19:21:36 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,57 +26,102 @@ int	ft_isnumber(char *pid)
 	return (1);
 }
 
-void	send_message(int pid, char *message)
+// while (message[i])
+// 	{
+// 		j = 0;
+// 		while (j < 8)
+// 		{
+// 			bit = (message[i] >> j) & 1;
+// 			if (bit == 1)
+// 				kill(pid, SIGUSR1);
+// 			else
+// 				kill(pid, SIGUSR2);
+// 			usleep(100);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+
+int	send_char(int pid, char c)
 {
 	int	i;
-	int	j;
-	int	bit;
 
 	i = 0;
-	while (message[i])
+	while (i < 8)
 	{
-		j = 0;
-		while (j < 8)
+		if (c & 1 << i)
 		{
-			bit = (message[i] >> j) & 1;
-			if (bit == 1)
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-			usleep(100);
-			j++;
+			if (kill(pid, SIGUSR1) == -1)
+				return (0);
 		}
+		else
+		{
+			if (kill(pid, SIGUSR2) == -1)
+				return (0);
+		}
+		usleep(100);
 		i++;
 	}
-	j = 0;
-	while (j < 8)
-	{
-		kill(pid, SIGUSR2);
-		usleep(100);
-		j++;
-	}
+	return (1);
+}
+
+void	handler(int signum, siginfo_t *info, void *context)
+{
+	static int	pid = 0;
+
+	(void)context;
+	if (info->si_pid)
+		pid = info->si_pid;
+	if (signum == SIGUSR1)
+		ft_printf("Message received by server.\n");
+	else if (signum == SIGUSR2)
+		ft_printf("Error: Message not received by server.\n");
 }
 
 int	main(int argc, char **argv)
 {
-	int	pid;
+	struct sigaction	sa;
+	int					i;
+	int					pid;
 
 	if (argc != 3)
 	{
-		ft_putstr_fd("Usage: ./client [server_pid] [message]\n", 2);
-		exit(-1);
+		ft_printf("Usage: ./client [server-pid] [message]\n");
+		return (0);
 	}
 	if (!ft_isnumber(argv[1]))
 	{
-		ft_putstr_fd("Invalid PID\n", 2);
-		exit(-1);
+		ft_printf("Error: Invalid PID.\n");
+		return (0);
 	}
 	pid = ft_atoi(argv[1]);
-	if (kill(pid, 0) == -1)
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 	{
-		ft_putstr_fd("Invalid PID\n", 2);
+		ft_printf("Error: Could not handle SIGUSR1.\n");
 		exit(-1);
 	}
-	send_message(pid, argv[2]);
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		ft_printf("Error: Could not handle SIGUSR2.\n");
+		exit(-1);
+	}
+	i = 0;
+	while (argv[2][i])
+	{
+		if (!send_char(pid, argv[2][i]))
+		{
+			ft_printf("Error: Could not send character.\n");
+			exit(-1);
+		}
+		i++;
+	}
+	if (!send_char(pid, '\0'))
+	{
+		ft_printf("Error: Could not send character.\n");
+		exit(-1);
+	}
 	return (0);
 }
