@@ -6,7 +6,7 @@
 #    By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/10 13:37:24 by osarsari          #+#    #+#              #
-#    Updated: 2023/08/26 16:01:25 by osarsari         ###   ########.fr        #
+#    Updated: 2023/08/26 17:20:46 by osarsari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ LDFLAGS	= -L$(LIB_DIR) -lft
 # List of source files (add your *.c files here)
 
 CLI_SRCS	=\
-	$(SRCDIR)client_v2.c \
+	$(SRCDIR)client.c \
 
 SER_SRCS	=\
 	$(SRCDIR)server.c \

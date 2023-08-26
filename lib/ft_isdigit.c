@@ -6,7 +6,7 @@
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:25:21 by osarsari          #+#    #+#             */
-/*   Updated: 2023/08/25 16:06:23 by osarsari         ###   ########.fr       */
+/*   Updated: 2023/08/26 17:48:56 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,18 @@
 int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+int	ft_isnumber(char *pid)
+{
+	int	i;
+
+	i = 0;
+	while (pid[i])
+	{
+		if (!ft_isdigit(pid[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

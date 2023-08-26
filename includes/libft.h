@@ -6,7 +6,7 @@
 /*   By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:03:40 by osarsari          #+#    #+#             */
-/*   Updated: 2023/05/25 13:20:07 by osarsari         ###   ########.fr       */
+/*   Updated: 2023/08/26 17:49:12 by osarsari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
+int		ft_isnumber(char *pid);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
