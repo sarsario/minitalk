@@ -6,7 +6,7 @@
 #    By: osarsari <osarsari@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/10 13:37:24 by osarsari          #+#    #+#              #
-#    Updated: 2023/08/25 16:14:28 by osarsari         ###   ########.fr        #
+#    Updated: 2023/08/26 16:01:25 by osarsari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ LDFLAGS	= -L$(LIB_DIR) -lft
 # List of source files (add your *.c files here)
 
 CLI_SRCS	=\
-	$(SRCDIR)client.c \
+	$(SRCDIR)client_v2.c \
 
 SER_SRCS	=\
 	$(SRCDIR)server.c \
@@ -105,6 +105,8 @@ $(SERVER) : $(SER_OBJS) $(LIB_DIR)libft.a
 $(LIB_DIR)libft.a:
 	@make -C $(LIB_DIR)
 
+bonus : all
+
 # Cleaning
 clean :
 	@make -C $(LIB_DIR) clean
@@ -120,4 +122,4 @@ fclean : clean
 re : fclean all
 
 # This specifies the rules that does not correspond to any filename
-.PHONY: all run clean fclean re $(CLIENT) $(SERVER)
+.PHONY: all run clean fclean re $(CLIENT) $(SERVER) bonus
